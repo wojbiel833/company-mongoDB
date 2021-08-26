@@ -19,7 +19,7 @@ router.get("/departments", async (req, res) => {
   try {
     res.json(await Department.find());
   } catch (err) {
-    // res.status(500).json({ message: err });
+    res.status(500).json({ message: err });
   }
 });
 
@@ -130,8 +130,9 @@ router.put("/departments/:id", async (req, res) => {
       await Department.updateOne(
         { _id: req.params.id },
         { $set: { name: name } }
-      );
-      res.json({ message: "OK" });
+      ).then((res) => console.log(res));
+      // wyswietlanie dokumentu ???
+      res.json(message:`${dep} was changed!`, { message: "OK" });
     } else res.status(404).json({ message: "Not found..." });
   } catch (err) {
     res.status(500).json({ message: err });
@@ -155,8 +156,12 @@ router.put("/departments/:id", async (req, res) => {
 router.delete("/departments/:id", async (req, res) => {
   try {
     const dep = await Department.findById(req.params.id);
-    if (dep) await Department.deleteOne({ _id: req.params.id });
-    else res.json({ message: `${dep} deleted!` });
+    if (dep)
+      await Department.deleteOne({ _id: req.params.id }).then((res) =>
+        console.log(res)
+      );
+      // wyswietlanie dokumentu ???
+    res.json({ message: `${dep} deleted!` });
   } catch (err) {
     res.status(500).json({ message: err });
   }

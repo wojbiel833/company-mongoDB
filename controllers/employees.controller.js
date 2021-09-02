@@ -2,7 +2,7 @@ const Employee = require("../models/employee.model");
 
 exports.getAll = async (req, res) => {
   try {
-    res.json(await Employee.find().populate("departments"));
+    res.json(await Employee.find().populate("department"));
   } catch (err) {
     res.status(500).json({ message: err });
   }
@@ -12,7 +12,7 @@ exports.getRandom = async (req, res) => {
   try {
     const count = await Employee.countDocuments();
     const rand = Math.floor(Math.random() * count);
-    const emp = await Employee.findOne().skip(rand).populate("departments");
+    const emp = await Employee.findOne().skip(rand).populate("department");
     if (!emp) res.status(404).json({ message: "Not found" });
     else res.json(emp);
   } catch (err) {
@@ -22,7 +22,7 @@ exports.getRandom = async (req, res) => {
 
 exports.getOne = async (req, res) => {
   try {
-    const emp = await Employee.findById(req.params.id).populate("departments");
+    const emp = await Employee.findById(req.params.id).populate("department");
     if (!emp) res.status(404).json({ message: "Not found" });
     else res.json(emp);
   } catch (err) {

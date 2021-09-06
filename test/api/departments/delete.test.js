@@ -15,13 +15,19 @@ describe("DELETE /api/departments/:id", () => {
       name: "Department #1",
     });
     await testDepOne.save();
+
+    const testDepTwo = new Department({
+      _id: "5d9f1159f81ce8d1ef2bee48",
+      name: "Department #2",
+    });
+    await testDepTwo.save();
   });
 
   it("should remove chosen data", async () => {
-    await Department.deleteMany();
+    await Department.deleteOne({ _id: "5d9f1140f10a81216cfd4408" });
     const res = await Department.find();
 
-    expect(res.body).not.to.exist;
+    expect(res.length).to.be.equal(1);
   });
 
   after(async () => {

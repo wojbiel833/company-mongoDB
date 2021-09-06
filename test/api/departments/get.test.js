@@ -1,7 +1,9 @@
-const chai = require("chai").expect;
-const chaiHttp = require("chat-http");
+const chai = require("chai");
+const chaiHttp = require("chai-http");
+const mongoose = require("mongoose");
 
 const server = require("../../../server.js");
+const Department = require("../../../models/department.model");
 
 chai.use(chaiHttp);
 
@@ -17,13 +19,31 @@ if (NODE_ENV === " production")
 else if (NODE_ENV === "test") dbURL = "mongodb://localhost:27017/companyDBtest";
 else dbURL = "mongodb://localhost:27017/companyDB";
 
-mongoose.connecy(dbURL, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 
 describe("GET /api/departments", () => {
+  before(async () => {
+    const testDepOne = new Department({
+      _id: "5d9f1140f10a81216cfd4408",
+      name: "Department #1",
+    });
+    await testDepOne.save();
+
+    const testDepTwo = new Department({
+      _id: "5d9f1159f81ce8d1ef2bee48",
+      name: "Department #2",
+    });
+    await testDepTwo.save();
+  });
+
   it("/ should return all departments", () => {});
 
   it("/:id should return one department by :id ", () => {});
 
   it("/random should return one random department", () => {});
+
+  after(async () => {
+    await Department.deleteMany();
+  });
 });

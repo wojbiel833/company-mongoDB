@@ -51,20 +51,16 @@ describe("Employee", () => {
   });
 
   it('should not throw an error if "firstName" and "lastName" is okay', () => {
-    const cases1 = ["Joe", "Bran", "Dhaenerys"];
-    const cases2 = ["Black", "Peanut", "Doe"];
+    const cases = [
+      ["Joe", "Doe"],
+      ["Bran", "Stark"],
+      ["Dhaenerys", "Targeryen"],
+    ];
 
-    for (let firstName of cases1) {
-      const empl = new Employee({ firstName });
+    for (let [firstName, lastName] of cases) {
+      const empl = new Employee({ firstName, lastName });
       empl.validate((err) => {
-        expect(err.errors.firstName).to.not.exist;
-      });
-    }
-
-    for (let lastName of cases2) {
-      const empl = new Employee({ lastName });
-      empl.validate((err) => {
-        expect(err.errors.lastName).to.not.exist;
+        expect(err).to.not.exist;
       });
     }
   });

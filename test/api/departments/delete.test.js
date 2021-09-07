@@ -24,9 +24,12 @@ describe("DELETE /api/departments/:id", () => {
   });
 
   it("should remove chosen data", async () => {
-    await request(server).delete("/api/departments/5d9f1140f10a81216cfd4408");
+    const servRes = await request(server).delete(
+      "/api/departments/5d9f1140f10a81216cfd4408"
+    );
     const res = await Department.find();
 
+    expect(servRes.status).to.be.equal(200);
     expect(res[0].name).to.be.equal("Department #2");
     expect(res.length).to.be.equal(1);
   });
